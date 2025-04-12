@@ -1,0 +1,5 @@
+import joblib
+
+features = X_train1.columns.tolist()
+
+joblib.dump(features, 'features.pkl')
