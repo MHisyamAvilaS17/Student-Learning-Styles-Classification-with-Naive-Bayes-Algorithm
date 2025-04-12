@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import json
 
 model = joblib.load("student_naive_bayes_model.pkl")
 label_encoders = joblib.load("label_encoders.pkl")
-features = joblib.load("features.pkl") 
+with open("features.json", "r") as f:
+    features = json.load(f)
 
 st.set_page_config(page_title="Prediksi Gaya Belajar", page_icon="🎓")
 st.title("🎓 Prediksi Gaya Belajar Mahasiswa")
