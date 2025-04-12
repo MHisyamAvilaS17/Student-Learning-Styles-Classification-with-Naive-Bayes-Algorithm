@@ -1,12 +1,9 @@
 import streamlit as st
-import pickle
 import pandas as pd
+import joblib
 
-with open("student_naive_bayes_model.pkl", "rb") as f:
-    model = pickle.load(f)
-
-with open("label_encoders.pkl", "rb") as f:
-    label_encoders = pickle.load(f)
+model = joblib.load("student_naive_bayes_model.pkl")
+label_encoders = joblib.load("label_encoders.pkl")
 
 st.set_page_config(page_title="Prediksi Gaya Belajar", page_icon="🎓")
 st.title("🎓 Prediksi Gaya Belajar Mahasiswa")
