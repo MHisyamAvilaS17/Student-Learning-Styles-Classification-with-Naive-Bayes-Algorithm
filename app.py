@@ -42,69 +42,66 @@ input_data = {
     "Final_Grade": label_encoders["Final_Grade"].transform([final_grade])[0],
 }
 
-input_df = pd.DataFrame([input_data])
-
-missing_cols = [col for col in features if col not in input_df.columns]
-if missing_cols:
-    st.error(f"Kolom berikut hilang dari input: {missing_cols}")
-else:
-    input_df = input_df[features]
-
 if st.button("🔍 Prediksi Gaya Belajar"):
-    prediction = model.predict(input_df)[0]
-    style = label_encoders['Preferred_Learning_Style'].inverse_transform([prediction])[0]
-    st.success(f"🎯 Gaya Belajar yang Diprediksi: **{style}**")
+    input_df = input_df.reindex(columns=features)
 
-    learning_styles_info = {
-        "Visual": {
-            "deskripsi": "Tipe belajar Visual menyukai penggunaan gambar, warna, dan diagram. Mereka mudah memahami informasi yang disajikan secara visual.",
-            "strategi": [
-                "Gunakan peta konsep atau mind map",
-                "Tandai poin penting dengan warna",
-                "Tonton video pembelajaran"
-            ],
-            "media": "Infografik, video tutorial, flashcard visual"
-        },
-        "Auditory": {
-            "deskripsi": "Tipe belajar Auditory belajar lebih baik melalui mendengarkan. Mereka menyukai diskusi, podcast, atau penjelasan lisan.",
-            "strategi": [
-                "Belajar sambil mendengarkan rekaman suara",
-                "Ikut diskusi kelompok",
-                "Gunakan teknik membaca keras"
-            ],
-            "media": "Podcast, audio book, penjelasan verbal"
-        },
-        "Kinesthetic": {
-            "deskripsi": "Tipe belajar Kinesthetic suka belajar melalui praktik langsung dan aktivitas fisik.",
-            "strategi": [
-                "Lakukan praktik atau eksperimen",
-                "Gunakan model nyata",
-                "Belajar sambil bergerak (walk and learn)"
-            ],
-            "media": "Simulasi, eksperimen langsung, role play"
-        },
-        "Reading/Writing": {
-            "deskripsi": "Tipe belajar ini menyukai teks dan catatan. Mereka senang membaca buku dan membuat ringkasan.",
-            "strategi": [
-                "Buat catatan dengan tulisan sendiri",
-                "Baca buku atau artikel",
-                "Gunakan daftar dan definisi"
-            ],
-            "media": "Buku, jurnal, catatan pribadi"
-        }
-    }
-
-    info = learning_styles_info.get(style, None)
-
-    if info:
-        st.markdown("## 🧠 Tentang Gaya Belajar Ini")
-        st.info(info["deskripsi"])
-
-        st.markdown("### 📌 Strategi Belajar yang Cocok")
-        for strategi in info["strategi"]:
-            st.write(f"- {strategi}")
-
-        st.markdown("### 📚 Media yang Disarankan")
-        st.success(info["media"])
+    if input_df.isnull().any().any():
+        st.error("❗ Input tidak lengkap atau kolom tidak sesuai. Pastikan semua kolom tersedia dan terisi.")
     else:
-        st.warning("Tidak ada informasi tambahan untuk gaya belajar ini.")
+        prediction = model.predict(input_df)[0]
+        style = label_encoders['Preferred_Learning_Style'].inverse_transform([prediction])[0]
+        st.success(f"🎯 Gaya Belajar yang Diprediksi: **{style}**")
+
+        learning_styles_info = {
+            "Visual": {
+                "deskripsi": "Tipe belajar Visual menyukai penggunaan gambar, warna, dan diagram. Mereka mudah memahami informasi yang disajikan secara visual.",
+                "strategi": [
+                    "Gunakan peta konsep atau mind map",
+                    "Tandai poin penting dengan warna",
+                    "Tonton video pembelajaran"
+                ],
+                "media": "Infografik, video tutorial, flashcard visual"
+            },
+            "Auditory": {
+                "deskripsi": "Tipe belajar Auditory belajar lebih baik melalui mendengarkan. Mereka menyukai diskusi, podcast, atau penjelasan lisan.",
+                "strategi": [
+                    "Belajar sambil mendengarkan rekaman suara",
+                    "Ikut diskusi kelompok",
+                    "Gunakan teknik membaca keras"
+                ],
+                "media": "Podcast, audio book, penjelasan verbal"
+            },
+            "Kinesthetic": {
+                "deskripsi": "Tipe belajar Kinesthetic suka belajar melalui praktik langsung dan aktivitas fisik.",
+                "strategi": [
+                    "Lakukan praktik atau eksperimen",
+                    "Gunakan model nyata",
+                    "Belajar sambil bergerak (walk and learn)"
+                ],
+                "media": "Simulasi, eksperimen langsung, role play"
+            },
+            "Reading/Writing": {
+                "deskripsi": "Tipe belajar ini menyukai teks dan catatan. Mereka senang membaca buku dan membuat ringkasan.",
+                "strategi": [
+                    "Buat catatan dengan tulisan sendiri",
+                    "Baca buku atau artikel",
+                    "Gunakan daftar dan definisi"
+                ],
+                "media": "Buku, jurnal, catatan pribadi"
+            }
+        }
+
+        info = learning_styles_info.get(style)
+
+        if info:
+            st.markdown("## 🧠 Tentang Gaya Belajar Ini")
+            st.info(info["deskripsi"])
+
+            st.markdown("### 📌 Strategi Belajar yang Cocok")
+            for strategi in info["strategi"]:
+                st.write(f"- {strategi}")
+
+            st.markdown("### 📚 Media yang Disarankan")
+            st.success(info["media"])
+        else:
+            st.warning("Tidak ada informasi tambahan untuk gaya belajar ini.")
