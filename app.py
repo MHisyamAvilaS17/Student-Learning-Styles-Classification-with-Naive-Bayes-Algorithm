@@ -43,7 +43,8 @@ input_data = {
 }
 
 if st.button("🔍 Prediksi Gaya Belajar"):
-    input_df = input_df.reindex(columns=features)
+    input_df = pd.DataFrame([input_data]) 
+    input_df = input_df.reindex(columns=features)  
 
     if input_df.isnull().any().any():
         st.error("❗ Input tidak lengkap atau kolom tidak sesuai. Pastikan semua kolom tersedia dan terisi.")
