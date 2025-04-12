@@ -4,6 +4,7 @@ import joblib
 
 model = joblib.load("student_naive_bayes_model.pkl")
 label_encoders = joblib.load("label_encoders.pkl")
+features = joblib.load("features.pkl") 
 
 st.set_page_config(page_title="Prediksi Gaya Belajar", page_icon="🎓")
 st.title("🎓 Prediksi Gaya Belajar Mahasiswa")
@@ -40,6 +41,8 @@ input_data = {
 }
 
 input_df = pd.DataFrame([input_data])
+
+input_df = input_df[features]
 
 if st.button("🔍 Prediksi Gaya Belajar"):
     prediction = model.predict(input_df)[0]
