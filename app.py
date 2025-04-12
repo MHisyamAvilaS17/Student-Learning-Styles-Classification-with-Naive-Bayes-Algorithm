@@ -44,7 +44,11 @@ input_data = {
 
 input_df = pd.DataFrame([input_data])
 
-input_df = input_df[features]
+missing_cols = [col for col in features if col not in input_df.columns]
+if missing_cols:
+    st.error(f"Kolom berikut hilang dari input: {missing_cols}")
+else:
+    input_df = input_df[features]
 
 if st.button("🔍 Prediksi Gaya Belajar"):
     prediction = model.predict(input_df)[0]
