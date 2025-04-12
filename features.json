@@ -1,0 +1,15 @@
+[
+  "Gender",
+  "Age",
+  "Study_Hours_per_Week",
+  "Online_Courses_Completed",
+  "Participation_in_Discussions",
+  "Assignment_Completion_Rate (%)",
+  "Exam_Score (%)",
+  "Attendance_Rate (%)",
+  "Use_of_Educational_Tech",
+  "Self_Reported_Stress_Level",
+  "Time_Spent_on_Social_Media (hours/week)",
+  "Sleep_Hours_per_Night",
+  "Final_Grade"
+]
